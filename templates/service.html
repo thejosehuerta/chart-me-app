@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Graph Microservice</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>  
+            <!-- The chart js chart will load here -->
+            <canvas id="pie-chart" width="innerWidth" height="innerHeight"></canvas> 
+            <!-- The chart js chart will be converted to a Base64 image and load here -->
+            <!-- <img id="chart-img" width="100%" height="auto" alt="chart image">
+            <hr> -->
+            <!-- The image will be encoded to Base64 and be printed here -->
+            <!-- <div class="container">
+                <h3>Image Base64 Code:</h3>
+                <form action="/service" method="POST">
+                    <textarea id="result" name="result" cols="60" rows="10"></textarea>
+                </form>
+            </div> -->
+   
+    <script>
+    var mychart = new Chart(document.getElementById("pie-chart").getContext('2d'), {
+        type: "{{ chart }}",
+        data: {
+            labels: [
+                {% for item in labels %}
+                    "{{ item }}",
+                {% endfor %}
+            ],
+            datasets: [{
+                label: "Hours",
+                backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", "#c15250", "#c43340"],
+                data: [
+                    {% for item in values %}
+                        "{{ item }}",
+                    {% endfor %}
+                ]
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Hours It Would Take To Learn Each Language'
+            }
+            // ,
+            // animation: {
+            //     onComplete: function(){
+            //         // convert chart js to image
+            //         document.getElementById('chart-img').src = mychart.toBase64Image();
+            //         // wait 5 sec and then encode image to string
+            //         // this guarantees the string is loaded every time. I was having issues without this
+            //         setTimeout(imageToBase64,500);  
+            //     }   
+            // }   
+        }     
+    });
+
+    // // converts the chart image to Base64 string
+    // function imageToBase64() {
+    //     var c = document.createElement('canvas');
+    //     var img = document.getElementById('chart-img');
+    //     c.height = img.naturalHeight;
+    //     c.width = img.naturalWidth;
+    //     var ctx = c.getContext('2d');
+    //     ctx.drawImage(img, 0, 0, c.width, c.height);
+    //     var base64String = c.toDataURL();
+    //     document.getElementById('result').innerHTML = base64String;
+    // }
+    </script>
+</body>
+</html>
